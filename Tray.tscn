@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://tray.png" type="Texture" id=1]
+[ext_resource path="res://Tray.gd" type="Script" id=3]
+
+[node name="Tray" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+offset = Vector2( 0, -100 )
+script = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Loc1" type="Position2D" parent="."]
+position = Vector2( 100, -62 )
+
+[node name="Loc2" type="Position2D" parent="."]
+position = Vector2( 100, 2 )
+
+[node name="Loc3" type="Position2D" parent="."]
+position = Vector2( 100, 65 )
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

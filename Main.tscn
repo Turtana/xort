@@ -1,0 +1,195 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Ship.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://background.png" type="Texture" id=3]
+[ext_resource path="res://Xolonium-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Tray.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ShipPart.tscn" type="PackedScene" id=6]
+[ext_resource path="res://sign1.png" type="Texture" id=7]
+[ext_resource path="res://sign0.png" type="Texture" id=8]
+[ext_resource path="res://platform.png" type="Texture" id=9]
+[ext_resource path="res://xort.png" type="Texture" id=10]
+[ext_resource path="res://explosion.wav" type="AudioStream" id=11]
+[ext_resource path="res://landing.wav" type="AudioStream" id=12]
+[ext_resource path="res://super_power_cool_dude.ogg" type="AudioStream" id=13]
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=8]
+resource_name = "xort_idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Animation/xort:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 0.9 ) ]
+}
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 20
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 32
+font_data = ExtResource( 4 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+Ship = ExtResource( 1 )
+ShipPart = ExtResource( 6 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 500, 600 )
+scale = Vector2( 1.4, 1.4 )
+texture = ExtResource( 3 )
+
+[node name="platform" type="Sprite" parent="."]
+position = Vector2( 485.534, 457.581 )
+texture = ExtResource( 9 )
+
+[node name="Sign" type="AnimatedSprite" parent="."]
+position = Vector2( 243.354, 214.854 )
+frames = SubResource( 7 )
+speed_scale = 0.3
+playing = true
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+anims/xort_idle = SubResource( 8 )
+
+[node name="xort" type="Sprite" parent="Animation"]
+position = Vector2( 365.351, 389.226 )
+texture = ExtResource( 10 )
+offset = Vector2( 0, -100 )
+
+[node name="ShipSpawn" type="Position2D" parent="."]
+position = Vector2( -257.999, 142 )
+
+[node name="Platform" type="Position2D" parent="."]
+position = Vector2( 511, 399 )
+
+[node name="TakeOff" type="Position2D" parent="."]
+position = Vector2( 1671.44, 55.6334 )
+
+[node name="Tray" parent="." instance=ExtResource( 5 )]
+position = Vector2( -200, 250 )
+
+[node name="MainMenu" type="Node2D" parent="."]
+position = Vector2( 442.104, 518.559 )
+z_index = 3
+
+[node name="PlayButton" type="Button" parent="MainMenu"]
+margin_left = 89.346
+margin_top = -329.333
+margin_right = 310.346
+margin_bottom = -237.333
+custom_fonts/font = SubResource( 1 )
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="MainMenu"]
+margin_left = 89.346
+margin_top = -211.006
+margin_right = 310.346
+margin_bottom = -119.006
+custom_fonts/font = SubResource( 1 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HUD" type="Node2D" parent="."]
+visible = false
+position = Vector2( 442.104, 518.559 )
+z_index = 3
+
+[node name="LaunchButton" type="Button" parent="HUD"]
+margin_left = 13.2963
+margin_top = 11.0803
+margin_right = 165.296
+margin_bottom = 56.0803
+custom_fonts/font = SubResource( 1 )
+text = "Take off"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShipData" type="RichTextLabel" parent="HUD"]
+anchor_right = 1.0
+margin_left = 114.0
+margin_top = -504.0
+margin_right = 473.0
+margin_bottom = -338.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 248.704, 213.653 )
+custom_fonts/normal_font = SubResource( 10 )
+bbcode_enabled = true
+bbcode_text = "[right]Sir. Kyb. Kaup. Komp.
+Energy: 0 / 0
+Oxygen: 0 / 0
+Weight: 0 / 0
+
+Ships[/right]"
+text = "Sir. Kyb. Kaup. Komp.
+Energy: 0 / 0
+Oxygen: 0 / 0
+Weight: 0 / 0
+
+Ships"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Congrats" type="RichTextLabel" parent="."]
+visible = false
+anchor_right = 1.0
+margin_left = 511.0
+margin_top = 36.0
+margin_right = 894.0
+margin_bottom = 161.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 248.704, 213.653 )
+custom_fonts/normal_font = SubResource( 9 )
+text = "Game complete!
+You repaired % ships."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="Landing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+pitch_scale = 1.5
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+autoplay = true
+[connection signal="button_up" from="MainMenu/PlayButton" to="." method="_on_PlayButton_button_up"]
+[connection signal="button_up" from="MainMenu/QuitButton" to="." method="_on_QuitButton_button_up"]
+[connection signal="button_up" from="HUD/LaunchButton" to="." method="_on_Button_button_up"]

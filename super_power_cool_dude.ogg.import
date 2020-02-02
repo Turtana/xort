@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/super_power_cool_dude.ogg-41d7cc9e092e0767cec2f3eff6c25877.oggstr"
+
+[deps]
+
+source_file="res://super_power_cool_dude.ogg"
+dest_files=[ "res://.import/super_power_cool_dude.ogg-41d7cc9e092e0767cec2f3eff6c25877.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
