@@ -69,7 +69,6 @@ texture = ExtResource( 9 )
 [node name="Sign" type="AnimatedSprite" parent="."]
 position = Vector2( 243.354, 214.854 )
 frames = SubResource( 1 )
-frame = 1
 speed_scale = 0.3
 playing = true
 
