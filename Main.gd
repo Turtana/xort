@@ -10,6 +10,8 @@ var shipcounter = 0
 var totalships = 10
 var ships_repaired = 0
 
+var hiscore = 0
+
 var types = [0,1,2,3,4]
 var catalogue = {
 	"Hull": [],
@@ -56,6 +58,17 @@ var names2 = [
 
 func _ready():
 	randomize()
+	
+	var save = File.new()
+	if save.file_exists("save.txt"):
+		save.open("save.txt", File.READ)
+		hiscore = int(save.get_as_text())
+	else:
+		hiscore = 0
+		save.open("save.txt", File.WRITE)
+		save.store_string("0")
+	save.close()
+	$MainMenu/HiScore.text = "High score:\n         " + str(hiscore)
 
 func _process(delta):
 	if weakref(ship).get_ref():
@@ -160,6 +173,13 @@ func _on_Button_button_up():
 			$Animation.stop()
 			$Congrats.text = "Congratulations!\nYou repaired " + str(ships_repaired) + " spaceships."
 			$Congrats.visible = true
+			if ships_repaired > hiscore:
+				hiscore = ships_repaired
+				var save = File.new()
+				save.open("save.txt", File.WRITE)
+				save.store_string(str(hiscore))
+				save.close()
+				$MainMenu/HiScore.text = "High score:\n         " + str(hiscore)
 		else:
 			SpawnShip()
 		on_platform = false

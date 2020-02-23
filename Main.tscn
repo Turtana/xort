@@ -14,7 +14,7 @@
 [ext_resource path="res://landing.wav" type="AudioStream" id=12]
 [ext_resource path="res://super_power_cool_dude.ogg" type="AudioStream" id=13]
 
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
 "loop": true,
@@ -22,7 +22,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=2]
 resource_name = "xort_idle"
 loop = true
 tracks/0/type = "value"
@@ -38,18 +38,18 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1, 0.9 ) ]
 }
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 size = 32
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=5]
 size = 20
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 4 )
-
-[sub_resource type="DynamicFont" id=9]
-size = 32
 font_data = ExtResource( 4 )
 
 [node name="Main" type="Node2D"]
@@ -68,12 +68,13 @@ texture = ExtResource( 9 )
 
 [node name="Sign" type="AnimatedSprite" parent="."]
 position = Vector2( 243.354, 214.854 )
-frames = SubResource( 7 )
+frames = SubResource( 1 )
+frame = 1
 speed_scale = 0.3
 playing = true
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-anims/xort_idle = SubResource( 8 )
+anims/xort_idle = SubResource( 2 )
 
 [node name="xort" type="Sprite" parent="Animation"]
 position = Vector2( 365.351, 389.226 )
@@ -96,12 +97,28 @@ position = Vector2( -200, 250 )
 position = Vector2( 442.104, 518.559 )
 z_index = 3
 
+[node name="HiScore" type="RichTextLabel" parent="MainMenu"]
+anchor_right = 1.0
+margin_left = 327.0
+margin_top = -329.0
+margin_right = 536.0
+margin_bottom = -119.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 248.704, 213.653 )
+custom_fonts/normal_font = SubResource( 3 )
+text = "hiscore here"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
 [node name="PlayButton" type="Button" parent="MainMenu"]
 margin_left = 89.346
 margin_top = -329.333
 margin_right = 310.346
 margin_bottom = -237.333
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -112,7 +129,7 @@ margin_left = 89.346
 margin_top = -211.006
 margin_right = 310.346
 margin_bottom = -119.006
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -128,7 +145,7 @@ margin_left = 13.2963
 margin_top = 11.0803
 margin_right = 165.296
 margin_bottom = 56.0803
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 4 )
 text = "Take off"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -142,7 +159,7 @@ margin_right = 473.0
 margin_bottom = -338.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 248.704, 213.653 )
-custom_fonts/normal_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
 bbcode_text = "[right]Sir. Kyb. Kaup. Komp.
 Energy: 0 / 0
@@ -171,7 +188,7 @@ margin_right = 894.0
 margin_bottom = 161.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 248.704, 213.653 )
-custom_fonts/normal_font = SubResource( 9 )
+custom_fonts/normal_font = SubResource( 3 )
 text = "Game complete!
 You repaired % ships."
 scroll_active = false
