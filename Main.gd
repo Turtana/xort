@@ -98,7 +98,9 @@ func SpawnShip():
 	var e = ship.total_energy
 	var o = ship.total_oxygen
 	
+	# generates stats for ship parts
 	for part in ship.parts:
+		
 		var partweight = int(floor(rand_range(7500, ship.total_weight * .25)))
 		if partweight < w:
 			w -= partweight
@@ -123,32 +125,74 @@ func SpawnShip():
 			part.oxygen = partoxygen
 		else:
 			part.oxygen = o
+
+	#generate "correct" stats
+	var correct_w = get_random_values(5, ship.total_weight)
+	var correct_e = get_random_values(4, ship.total_energy)
+	var correct_o = get_random_values(2, ship.total_oxygen)
+	correct_e += [0]
+	correct_o += [0,0,0]
 	
+	# generate "correct" parts
+	var correct_parts = []
+	var part_types = ["Cockpit", "Engine", "Hull", "Gun", "Landing"]
+	for i in range(5):
+		var part = ShipPart.instance()
+		part.weight = correct_w[i]
+		part.energy = correct_e[i]
+		part.oxygen = correct_o[i]
+		part.type = part_types[i]
+		correct_parts.append(part)
+	
+	#generates spare parts
 	for part in ship.parts:
 		part.update_desc()
 		var possibilities = types.duplicate()
 		possibilities.erase(part.style)
 		possibilities.remove(randi() % len(possibilities))
 		possibilities.shuffle()
+		var correct_possibility = randi() % len(possibilities)
+		#possibilities = array of numbers [4,1,2]
+		
+		if part.broken:
+			pass
 		
 		catalogue[part.type] = []
+		var i = 0
 		for p in possibilities:
-			var new_part = ShipPart.instance()
-			new_part.texture = load("res://parts/" + part.type.to_lower() + str(p) + ".png")
-			new_part.type = part.type
-			new_part.style = p
-			new_part.connect("click", self, "change_parts")
+			# if correct, instead pull it
+			var new_part
+			if i == correct_possibility:
+				if part.type == "Cockpit":
+					new_part = correct_parts[0]
+				elif part.type == "Engine":
+					new_part = correct_parts[1]
+				elif part.type == "Hull":
+					new_part = correct_parts[2]
+				elif part.type == "Gun":
+					new_part = correct_parts[3]
+				elif part.type == "Landing":
+					new_part = correct_parts[4]
+			else:
+				new_part = ShipPart.instance()
+				new_part.type = part.type
 			
-			# code to generate puzzle
-			# for starters, same parameters as normal ship parts, some repairs may be unsolvable
-			new_part.weight = int(floor(rand_range(7000, ship.total_weight * .30)))
-			if new_part.type != "Landing":
-				new_part.energy = int(floor(rand_range(2000, ship.total_energy * .40)))
-			if new_part.type == "Cockpit" or new_part.type == "Engine":
-				new_part.oxygen = int(floor(rand_range(2000, ship.total_oxygen)))
+			# do these anyway
+			new_part.style = p
+			new_part.texture = load("res://parts/" + part.type.to_lower() + str(p) + ".png")
+			new_part.connect("click", self, "change_parts")
+
+			# generate stats, if not correct
+			if i != correct_possibility:
+				new_part.weight = int(floor(rand_range(7000, ship.total_weight * .40)))
+				if new_part.type != "Landing":
+					new_part.energy = int(floor(rand_range(2000, ship.total_energy * .50)))
+				if new_part.type == "Cockpit" or new_part.type == "Engine":
+					new_part.oxygen = int(floor(rand_range(2000, ship.total_oxygen)))
 			
 			catalogue[part.type].append(new_part)
 			new_part.update_desc()
+			i += 1
 	
 	ship.goto($Platform.position)
 	$Landing.play()
@@ -194,6 +238,25 @@ func PartTray(part):
 		$Tray.set_parts(catalogue[part.type])
 		$Tray.eject()
 	$Tray.type = part.type
+
+func get_random_values(number, amount):
+	if number == 0:
+		return []
+	var rand_float_array = []
+	var amount_array = []
+	
+	for _i in range(number-1):
+		rand_float_array.append(floor(rand_range(0,amount)))
+	rand_float_array.append(0)
+	rand_float_array.append(amount)
+	rand_float_array.sort()
+	
+	for f in range(len(rand_float_array)):
+		if f == 0:
+			continue
+		amount_array.append(rand_float_array[f] - rand_float_array[f-1])
+	amount_array.shuffle()
+	return amount_array
 
 func change_parts(part):
 	var loc = Vector2()
